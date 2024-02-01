@@ -1,6 +1,7 @@
-import  { useState } from "react";
+import { useState } from "react";
 import Todolist from "./Todolist";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function TodoForm() {
   const [todo, setTodo] = useState([]);
   const [todos, setTodos] = useState("");
@@ -9,17 +10,25 @@ export default function TodoForm() {
   // Yeni bir todo eklemek için kullanılan fonksiyon
   const addTodo = (e) => {
     e.preventDefault();
-    if (todos.trim() !== "") {
-      if (editingIndex !== null) {
-        // Eğer bir todo güncelleniyorsa
-        updateTodo(editingIndex, todos);
-        setEditingIndex(null);
-      } else {
-        // Yeni bir todo ekleniyorsa
-        setTodo([todos, ...todo]);
-      }
-      setTodos("");
+
+    // Kullanıcının 3 karakterden az giriş yapması durumunda uyarı ver
+    if (todos.trim().length < 3) {
+      toast.error("Todo must be at least 3 characters long");
+      return;
     }
+
+    if (editingIndex !== null) {
+      // Eğer bir todo güncelleniyorsa
+      updateTodo(editingIndex, todos);
+      toast.success("Edited successfully");
+      setEditingIndex(null);
+    } else {
+      // Yeni bir todo ekleniyorsa
+      setTodo([todos, ...todo]);
+      toast.success("Added successfully");
+    }
+
+    setTodos("");
   };
 
   // Belirli bir index'teki todo öğesini silmek için kullanılan fonksiyon
@@ -28,6 +37,7 @@ export default function TodoForm() {
     updatedTodos.splice(index, 1);
     setTodo(updatedTodos);
     setEditingIndex(null); // Güncelleme modunu sıfırla
+    toast.success("removed successfully");
   };
 
   // Belirli bir index'teki todo öğesini güncellemek için kullanılan fonksiyon
@@ -70,6 +80,7 @@ export default function TodoForm() {
           editingIndex={editingIndex}
         />
       </div>
+      <ToastContainer />
     </>
   );
 }

@@ -5,7 +5,7 @@ const Todolist = ({ todo, removeTodo, editTodo, editingIndex }) => {
           <li
             key={index}
             className={`flex justify-between items-center px-4 py-2 border-b border-gray-300 ${
-              editingIndex === index ? "bg-gray-200" : ""
+              editingIndex === index ? "bg-gr y-200" : ""
             }`}
           >
             <span className="text-xl">{item}</span>
